@@ -1,9 +1,33 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./App.css";
+import { useAuth } from "./contexts/AuthContext";
 
 function Admin() {
   const navigate = useNavigate();
+  const { isAuthenticated, isAdmin, logout, isLoading } = useAuth();
+
+  useEffect(() => {
+    // Only redirect if we're done loading and user is not authenticated or not admin
+    if (!isLoading && (!isAuthenticated || !isAdmin)) {
+      navigate('/');
+    }
+  }, [isLoading, isAuthenticated, isAdmin, navigate]);
+
+  // Show loading state
+  if (isLoading) {
+    return (
+      <div style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100vh',
+        fontSize: '20px'
+      }}>
+        Loading...
+      </div>
+    );
+  }
 
   const cards = [
     { title: "Ceylonkrait (මුදු කරවලා)", path: "/AdminCeylonkrait" },
@@ -17,7 +41,10 @@ function Admin() {
     <div className="admin-wrapper">
       <button
         className="signin-button"
-        onClick={() => navigate("/CreateAccount")}
+        onClick={() => {
+          logout();
+          navigate("/");
+        }}
       >
         Logout
       </button>
