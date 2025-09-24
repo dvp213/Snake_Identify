@@ -1,18 +1,17 @@
 from pydantic import BaseModel
-from typing import Optional
 from datetime import datetime
 
 class ChatBase(BaseModel):
-    user_id: int
-    message: str
+    request: str
 
 class ChatCreate(ChatBase):
     pass
 
 class ChatResponse(ChatBase):
-    id: int
-    response: str
-    timestamp: datetime
+    chatid: int
+    userid: int
+    chatresponse: str
+    createddate: datetime
 
     class Config:
-        orm_mode = True
+        from_attributes = True  # replaces orm_mode in Pydantic v2
