@@ -12,19 +12,22 @@ import Chatbot from './chatbot.jsx';
 import Admin from './Admin.jsx';
 import AdminCeylonkrait from './AdminCeylonkrait.jsx';
 
+import { AuthProvider } from './contexts/AuthContext';
+
 ReactDOM.createRoot(document.getElementById("root")).render(
   <BrowserRouter>
-    <Routes>
-      <Route path="/" element={<App />} />
-      <Route path="/Details" element={<Details />} />
-      <Route path="/related" element={<RelatedSpecies />} />
-      <Route path="/Delated" element={<RelatedSpecies />} />
-      <Route path="/Login" element={<Login />} />
-      <Route path="/" element={<App />} />
-      <Route path="/CreateAccount" element={<CreateAccount />} />
-      <Route path="/chatbot" element={<Chatbot />} />
-      <Route path="/Admin" element={<Admin />} />
-      <Route path="/AdminCeylonkrait" element={<AdminCeylonkrait />} />
-    </Routes>
+    <AuthProvider>
+      <Routes>
+        <Route path="/" element={<App />} />
+        <Route path="/Details" element={<Details />} />
+        <Route path="/related" element={<RelatedSpecies />} />
+        <Route path="/Delated" element={<RelatedSpecies />} />
+        <Route path="/Login" element={<Login />} />
+        <Route path="/CreateAccount" element={<CreateAccount />} />
+        <Route path="/chatbot" element={<Chatbot />} />
+        <Route path="/Admin" element={<Admin />} />
+        <Route path="/AdminCeylonkrait" element={<AdminCeylonkrait />} />
+      </Routes>
+    </AuthProvider>
   </BrowserRouter>
 );

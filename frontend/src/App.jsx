@@ -1,13 +1,15 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./App.css";
+import { useAuth } from "./contexts/AuthContext";
 
 function App() {
   const [showModal, setShowModal] = useState(false);
-  const [showContact, setShowContact] = useState(false); // ✅ new state
+  const [showContact, setShowContact] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
   const navigate = useNavigate();
+  const { isAuthenticated, logout } = useAuth();
 
   const handleUploadClick = () => setShowModal(true);
 
@@ -35,9 +37,18 @@ function App() {
 
   return (
     <div className={`container ${showModal ? "blurred" : ""}`}>
-      <button className="signin-button" onClick={() => navigate("/Login")}>
-        Sign In / Sign Up
-      </button>
+      {!isAuthenticated ? (
+        <button className="signin-button" onClick={() => navigate("/Login")}>
+          Sign In / Sign Up
+        </button>
+      ) : (
+        <button className="signin-button" onClick={() => {
+          logout();
+          navigate("/");
+        }}>
+          Sign Out
+        </button>
+      )}
 
       <div className="text-content">
         <h1 className="title">Identify</h1>
