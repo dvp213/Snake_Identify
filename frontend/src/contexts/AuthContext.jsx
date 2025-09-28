@@ -5,13 +5,13 @@ const AuthContext = createContext(null);
 // Function to check if a JWT token is expired
 const isTokenExpired = (token) => {
     if (!token) return true;
-    
+
     try {
         // Extract the payload part of the JWT (second part)
         const base64Url = token.split('.')[1];
         const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
         const payload = JSON.parse(window.atob(base64));
-        
+
         // Check the expiration time
         const currentTime = Math.floor(Date.now() / 1000); // Current time in seconds
         return payload.exp < currentTime;
@@ -31,7 +31,7 @@ export const AuthProvider = ({ children }) => {
         try {
             const token = localStorage.getItem('token');
             const adminStatus = localStorage.getItem('isAdmin') === 'true';
-            
+
             // Validate the token
             if (token && !isTokenExpired(token)) {
                 setAuthToken(token);
@@ -77,14 +77,14 @@ export const AuthProvider = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ 
-            isAuthenticated, 
-            isAdmin, 
-            login, 
-            logout, 
+        <AuthContext.Provider value={{
+            isAuthenticated,
+            isAdmin,
+            login,
+            logout,
             isLoading,
             getAuthHeaders,
-            token: authToken 
+            token: authToken
         }}>
             {children}
         </AuthContext.Provider>

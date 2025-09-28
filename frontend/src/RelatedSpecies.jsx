@@ -24,7 +24,7 @@ function RelatedSpecies() {
       try {
         const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
         const response = await fetch(`${apiBaseUrl}/snake/related/${snakeId}`);
-        
+
         if (response.ok) {
           const data = await response.json();
           setRelatedSnakes(data);
@@ -92,7 +92,7 @@ function RelatedSpecies() {
           {snakeName ? `(Similar to ${snakeName})` : "(Similar snake species)"}
         </span>
       </h1>
-      
+
       {/* Container for species boxes */}
       <div className="related-container">
         {loading ? (
@@ -111,9 +111,9 @@ function RelatedSpecies() {
               </div>
               <div className="species-image">
                 {snake.image_data ? (
-                  <img 
-                    src={snake.image_data} 
-                    alt={snake.snakeenglishname} 
+                  <img
+                    src={snake.image_data}
+                    alt={snake.snakeenglishname}
                     onError={(e) => {
                       e.target.onerror = null;
                       const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
@@ -121,9 +121,9 @@ function RelatedSpecies() {
                     }}
                   />
                 ) : (
-                  <img 
-                    src={`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000'}/snake/image/${snake.snakeid}`} 
-                    alt={snake.snakeenglishname} 
+                  <img
+                    src={`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000'}/snake/image/${snake.snakeid}`}
+                    alt={snake.snakeenglishname}
                     onError={(e) => {
                       e.target.onerror = null;
                       e.target.src = '/vite.svg';
