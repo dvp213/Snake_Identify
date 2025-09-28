@@ -59,67 +59,104 @@
 
 .category-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1.5rem;
   padding: 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .category-card {
   background: rgba(255, 255, 255, 0.1);
   border-radius: 12px;
-  padding: 1.5rem;
+  padding: 1rem;
   text-align: center;
   backdrop-filter: blur(10px);
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
   border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 120px;
 }
 
 .category-card:hover {
   transform: translateY(-5px);
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
 }
 
 .category-card h2 {
-  margin: 0 0 1rem 0;
-  font-size: 1.5rem;
+  margin: 0 0 0.8rem 0;
+  font-size: 1.3rem;
+  color: #d4af37;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+  padding-bottom: 0.5rem;
+}
+
+.image-container {
+  position: relative;
+  overflow: hidden;
+  height: 200px;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.snake-details {
+  text-align: left;
+  margin: 1rem 0;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 0.8rem;
+  border-radius: 8px;
+}
+
+.snake-details p {
+  margin: 0.3rem 0;
+  font-size: 0.9rem;
+  color: #f0f0f0;
+}
+
+.snake-details strong {
   color: #d4af37;
 }
 
-.category-card img {
+.button-container {
+  margin-top: auto;
   width: 100%;
-  height: 200px;
-  object-fit: cover;
-  border-radius: 8px;
-  margin-bottom: 1rem;
-  border: 2px solid rgba(255, 255, 255, 0.1);
 }
 
 .edit-button {
   background-color: #2196f3;
   color: white;
   border: none;
-  padding: 0.75rem 1.5rem;
+  padding: 0.75rem 1rem;
   border-radius: 8px;
   cursor: pointer;
   font-weight: bold;
   width: 100%;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  letter-spacing: 0.5px;
 }
 
 .edit-button:hover {
   background-color: #1976d2;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  transform: translateY(-2px);
 }
 
-.placeholder-image {
-  width: 100%;
-  height: 200px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 2px dashed rgba(255, 255, 255, 0.2);
-  border-radius: 8px;
-  margin-bottom: 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: rgba(255, 255, 255, 0.5);
+/* Details button removed */
+
+.add-style {
+  margin-top: auto;
+  background-color: #ff9800;
+}
+
+.add-style:hover {
+  background-color: #e68a00;
 }
 
 .edit-button.add-style {

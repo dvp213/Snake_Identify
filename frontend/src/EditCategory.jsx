@@ -47,9 +47,20 @@ function EditCategory() {
                 throw new Error('No authentication token found');
             }
 
+            // Map category ID to numeric class label (0-4)
+            const categoryToNumericClass = {
+                'ceylonkrait': '0',
+                'cobra': '1',
+                'commonkrait': '2', 
+                'russellsviper': '3',
+                'sawscaledviper': '4'
+            };
+
             // Create snake data as a JSON string
             const snakeData = {
-                class_label: category.class_label,
+                class_label: categoryToNumericClass[category.id],
+                snakeenglishname: category.englishName,
+                snakesinhalaname: category.sinhalaName,
                 snakeenglishdescription: formData.englishDescription,
                 snakesinhaladescription: formData.sinhalaDescription
             };

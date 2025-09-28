@@ -49,7 +49,7 @@ function Details() {
             </div>
 
             <p className="details-text">
-              {language === "en" ? snake.description_en : snake.description_si}
+              {language === "en" ? snake.description_en || snake.snakeenglishdescription : snake.description_si || snake.snakesinhaladescription}
             </p>
 
             {/* Buttons remain always in English */}
@@ -60,7 +60,7 @@ function Details() {
 
               <button
                 className="action-button"
-                onClick={() => navigate(`/related/${snake.id}`)}
+                onClick={() => navigate(`/related/${snake.snakeid || snake.id}`)}
               >
                 Related Species
               </button>
@@ -73,9 +73,14 @@ function Details() {
 
           <div className="details-right">
             <img
-              src={`${import.meta.env.VITE_API_BASE_URL}/uploads/${snake.image}`}
+              src={snake.image_data || `${import.meta.env.VITE_API_BASE_URL}/snake/image/${snake.snakeid}`}
               alt={`${snake.english_name} image`}
               className="combined-image"
+              onError={(e) => {
+                console.error("Failed to load image");
+                e.target.onerror = null;
+                e.target.src = '/vite.svg';
+              }}
             />
           </div>
         </>

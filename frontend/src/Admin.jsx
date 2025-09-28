@@ -19,6 +19,7 @@ function Admin() {
     // Fetch snake data
     const fetchSnakes = async () => {
       try {
+        console.log("Fetching snakes data...");
         const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/snake/all`, {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -26,7 +27,10 @@ function Admin() {
         });
         if (response.ok) {
           const data = await response.json();
+          console.log("Received snakes data:", data);
           setSnakes(data);
+        } else {
+          console.error("Error fetching snakes:", response.status, await response.text());
         }
       } catch (error) {
         console.error('Error fetching snakes:', error);
@@ -94,6 +98,15 @@ function Admin() {
     },
   ];
 
+  // Define the mapping between category IDs and their numeric class labels
+  const categoryToNumericClass = {
+    'ceylonkrait': '0',    // Ceylonkrait (මුදු කරවලා)
+    'cobra': '1',          // Cobra (නයා)
+    'commonkrait': '2',    // Commonkrait (තෙල් කරවලා)
+    'russellsviper': '3',  // Russellsviper (තිත් පොළඟා)
+    'sawscaledviper': '4'  // Sawscaledviper (වැලි පොළඟා)
+  };
+
   return (
     <div className="admin-wrapper">
       <div className="admin-header">
@@ -113,80 +126,46 @@ function Admin() {
 
       <div className="category-grid">
         {categories.map(category => {
-          // Convert category ID to numeric class label for comparison
-          const categoryToLabel = {
-            'ceylonkrait': '0',
-            'cobra': '1',
-            'commonkrait': '2',
-            'russellsviper': '3',
-            'sawscaledviper': '4'
-          };
-          // Find if there's existing data for this category
-          const existingData = snakes.find(
-            snake => snake.class_label === categoryToLabel[category.id]
-          );
+          // Find if there's existing data for this category using numeric class label
+          // Handle both string and numeric class labels for compatibility
+          const existingData = snakes.find(snake => {
+            const targetClass = categoryToNumericClass[category.id];
+            return snake.class_label === targetClass || 
+                   snake.class_label === parseInt(targetClass) ||
+                   String(snake.class_label) === String(targetClass);
+          });
+
+          console.log(`Category ${category.id} (${categoryToNumericClass[category.id]}): `, existingData);
+          console.log(`Looking for class label: ${categoryToNumericClass[category.id]}, comparing with snakes:`, snakes.map(s => ({id: s.snakeid, name: s.snakeenglishname, class: s.class_label})));
 
           return (
             <div key={category.id} className="category-card">
               <h2>{category.title}</h2>
               {existingData ? (
-                <>
-                  <img
-                    src={`http://localhost:8000/${existingData.snakeimage}` || '/placeholder.png'}
-                    alt={existingData.snakeenglishname}
-                    onError={(e) => {
-                      e.target.onerror = null;
-                      e.target.src = '/vite.svg';
-                    }}
-                  />
-                  <div className="button-container">
-                    <button
-                      className="details-button"
-                      onClick={() => navigate(`/details/${category.id}`, {
-                        state: {
-                          snake: {
-                            id: category.id,
-                            english_name: category.englishName,
-                            sinhala_name: category.sinhalaName,
-                            scientific_name: existingData?.scientific_name || "",
-                            description_en: existingData?.description_en || "",
-                            description_si: existingData?.description_si || "",
-                            image: existingData?.image || ""
-                          }
-                        }
-                      })}
-                    >
-                      More Details
-                    </button>
-                    <button
-                      className="edit-button"
-                      onClick={() => navigate(`/edit-category/${category.id}`, {
-                        state: {
-                          category,
-                          existingData
-                        }
-                      })}
-                    >
-                      Edit Details
-                    </button>
-                  </div>
-                </>
-              ) : (
-                <>
-                  <div className="placeholder-image">
-                    <span>No image uploaded</span>
-                  </div>
+                <div className="button-container">
                   <button
-                    className="edit-button add-style"
+                    className="edit-button"
                     onClick={() => navigate(`/edit-category/${category.id}`, {
                       state: {
-                        category
+                        category,
+                        existingData
                       }
                     })}
                   >
-                    Add Details
+                    Edit Details
                   </button>
-                </>
+                </div>
+              ) : (
+                <button
+                  className="edit-button add-style"
+                  onClick={() => navigate(`/edit-category/${category.id}`, {
+                    state: {
+                      category
+                    }
+                  })}
+                >
+                  Add Details
+                </button>
               )}
             </div>
           );
