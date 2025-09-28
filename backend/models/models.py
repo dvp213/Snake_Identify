@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Text, Boolean, TIMESTAMP, ForeignKey
+from sqlalchemy import Column, Integer, String, Text, Boolean, TIMESTAMP, ForeignKey, LargeBinary
 from sqlalchemy.sql import func
 import models.database
 
@@ -19,8 +19,9 @@ class Snake(models.database.Base):
     snakesinhalaname = Column(String(255))
     snakeenglishdescription = Column(Text)
     snakesinhaladescription = Column(Text)
-    snakeimage = Column(String(500))           # URL or path
-    class_label = Column(String(100), unique=True)  # for mapping model predictions
+    snakeimage = Column(LargeBinary)           # Binary image data stored directly in DB
+    snakeimage_type = Column(String(50))       # Image MIME type (e.g., 'image/jpeg')
+    class_label = Column(String(100))  # for mapping model predictions (stores 0-4)
 
 class Chat(models.database.Base):
     __tablename__ = "chats"

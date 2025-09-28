@@ -11,6 +11,8 @@ import CreateAccount from './CreateAccount.jsx';
 import Chatbot from './chatbot.jsx';
 import Admin from './Admin.jsx';
 import AdminCeylonkrait from './AdminCeylonkrait.jsx';
+import EditCategory from './EditCategory.jsx';
+import AddRelatedSpecies from './AddRelatedSpecies.jsx';
 
 import { AuthProvider } from './contexts/AuthContext';
 
@@ -19,6 +21,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     <AuthProvider>
       <Routes>
         <Route path="/" element={<App />} />
+        <Route path="/Details/:snakeId" element={<Details />} />
         <Route path="/Details" element={<Details />} />
         <Route path="/related" element={<RelatedSpecies />} />
         <Route path="/Delated" element={<RelatedSpecies />} />
@@ -26,6 +29,8 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <Route path="/CreateAccount" element={<CreateAccount />} />
         <Route path="/chatbot" element={<Chatbot />} />
         <Route path="/Admin" element={<Admin />} />
+        <Route path="/edit-category/:id" element={<EditCategory />} />
+        <Route path="/add-related-species" element={<AddRelatedSpecies />} />
         <Route path="/AdminCeylonkrait" element={<AdminCeylonkrait />} />
       </Routes>
     </AuthProvider>
