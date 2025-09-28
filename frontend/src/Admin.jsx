@@ -57,38 +57,38 @@ function Admin() {
 
   // Predefined categories
   const categories = [
-    { 
+    {
       id: "ceylonkrait",
-      title: "Ceylonkrait (මුදු කරවලා)", 
-      englishName: "Ceylonkrait", 
+      title: "Ceylonkrait (මුදු කරවලා)",
+      englishName: "Ceylonkrait",
       sinhalaName: "මුදු කරවලා",
       class_label: "ceylonkrait"
     },
-    { 
+    {
       id: "commonkrait",
-      title: "Commonkrait (තෙල් කරවලා)", 
-      englishName: "Commonkrait", 
+      title: "Commonkrait (තෙල් කරවලා)",
+      englishName: "Commonkrait",
       sinhalaName: "තෙල් කරවලා",
       class_label: "commonkrait"
     },
-    { 
+    {
       id: "cobra",
-      title: "Cobra (නයා)", 
-      englishName: "Cobra", 
+      title: "Cobra (නයා)",
+      englishName: "Cobra",
       sinhalaName: "නයා",
       class_label: "cobra"
     },
-    { 
+    {
       id: "russellsviper",
-      title: "Russellsviper (තිත් පොළඟා)", 
-      englishName: "Russellsviper", 
+      title: "Russellsviper (තිත් පොළඟා)",
+      englishName: "Russellsviper",
       sinhalaName: "තිත් පොළඟා",
       class_label: "russellsviper"
     },
-    { 
+    {
       id: "sawscaledviper",
-      title: "Sawscaledviper (වැලි පොළඟා)", 
-      englishName: "Sawscaledviper", 
+      title: "Sawscaledviper (වැලි පොළඟා)",
+      englishName: "Sawscaledviper",
       sinhalaName: "වැලි පොළඟා",
       class_label: "sawscaledviper"
     },
@@ -110,7 +110,7 @@ function Admin() {
           </button>
         </div>
       </div>
-      
+
       <div className="category-grid">
         {categories.map(category => {
           // Convert category ID to numeric class label for comparison
@@ -131,8 +131,8 @@ function Admin() {
               <h2>{category.title}</h2>
               {existingData ? (
                 <>
-                  <img 
-                    src={`http://localhost:8000/${existingData.snakeimage}` || '/placeholder.png'} 
+                  <img
+                    src={`http://localhost:8000/${existingData.snakeimage}` || '/placeholder.png'}
                     alt={existingData.snakeenglishname}
                     onError={(e) => {
                       e.target.onerror = null;
@@ -140,7 +140,7 @@ function Admin() {
                     }}
                   />
                   <div className="button-container">
-                    <button 
+                    <button
                       className="details-button"
                       onClick={() => navigate(`/details/${category.id}`, {
                         state: {
@@ -158,12 +158,12 @@ function Admin() {
                     >
                       More Details
                     </button>
-                    <button 
-                      className="edit-button" 
-                      onClick={() => navigate(`/edit-category/${category.id}`, { 
-                        state: { 
+                    <button
+                      className="edit-button"
+                      onClick={() => navigate(`/edit-category/${category.id}`, {
+                        state: {
                           category,
-                          existingData 
+                          existingData
                         }
                       })}
                     >
@@ -176,11 +176,11 @@ function Admin() {
                   <div className="placeholder-image">
                     <span>No image uploaded</span>
                   </div>
-                  <button 
-                    className="edit-button add-style" 
+                  <button
+                    className="edit-button add-style"
                     onClick={() => navigate(`/edit-category/${category.id}`, {
-                      state: { 
-                        category 
+                      state: {
+                        category
                       }
                     })}
                   >

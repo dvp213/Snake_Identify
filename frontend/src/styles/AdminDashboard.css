@@ -40,7 +40,7 @@
 }
 
 .add-category-button {
-  background-color: #4CAF50;
+  background-color: #4caf50;
   color: white;
 }
 
@@ -94,7 +94,7 @@
 }
 
 .edit-button {
-  background-color: #2196F3;
+  background-color: #2196f3;
   color: white;
   border: none;
   padding: 0.75rem 1.5rem;
@@ -106,7 +106,7 @@
 }
 
 .edit-button:hover {
-  background-color: #1976D2;
+  background-color: #1976d2;
 }
 
 .placeholder-image {
@@ -123,7 +123,7 @@
 }
 
 .edit-button.add-style {
-  background-color: #4CAF50;
+  background-color: #4caf50;
 }
 
 .edit-button.add-style:hover {

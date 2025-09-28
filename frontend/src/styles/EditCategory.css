@@ -32,8 +32,8 @@
 .back-button {
   padding: 0.75rem 1.5rem;
   background-color: transparent;
-  color: #2196F3;
-  border: 1px solid #2196F3;
+  color: #2196f3;
+  border: 1px solid #2196f3;
   border-radius: 8px;
   cursor: pointer;
   font-weight: bold;
@@ -44,7 +44,7 @@
 }
 
 .back-button:hover {
-  background-color: #2196F3;
+  background-color: #2196f3;
   color: white;
 }
 
@@ -101,7 +101,7 @@
 
 .form-group input[type="file"]::file-selector-button {
   padding: 0.5rem 1rem;
-  background-color: #2196F3;
+  background-color: #2196f3;
   color: white;
   border: none;
   border-radius: 4px;
@@ -111,7 +111,7 @@
 }
 
 .form-group input[type="file"]::file-selector-button:hover {
-  background-color: #1976D2;
+  background-color: #1976d2;
 }
 
 .image-preview {
@@ -156,7 +156,7 @@
 }
 
 .submit-button {
-  background-color: #4CAF50;
+  background-color: #4caf50;
   color: white;
 }
 

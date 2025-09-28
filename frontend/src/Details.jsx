@@ -7,7 +7,7 @@ function Details() {
   const { snakeId } = useParams();
   const location = useLocation();
   const [snake, setSnake] = useState(null);
-  
+
   // Default language is Sinhala
   const [language, setLanguage] = useState("si");
 
