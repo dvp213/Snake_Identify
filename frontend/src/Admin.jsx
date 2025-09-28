@@ -113,6 +113,12 @@ function Admin() {
         <h1>Admin Dashboard</h1>
         <div className="admin-buttons">
           <button
+            className="add-related-button"
+            onClick={() => navigate("/add-related-species")}
+          >
+            Add Related Species
+          </button>
+          <button
             className="logout-button"
             onClick={() => {
               logout();
@@ -130,13 +136,13 @@ function Admin() {
           // Handle both string and numeric class labels for compatibility
           const existingData = snakes.find(snake => {
             const targetClass = categoryToNumericClass[category.id];
-            return snake.class_label === targetClass || 
-                   snake.class_label === parseInt(targetClass) ||
-                   String(snake.class_label) === String(targetClass);
+            return snake.class_label === targetClass ||
+              snake.class_label === parseInt(targetClass) ||
+              String(snake.class_label) === String(targetClass);
           });
 
           console.log(`Category ${category.id} (${categoryToNumericClass[category.id]}): `, existingData);
-          console.log(`Looking for class label: ${categoryToNumericClass[category.id]}, comparing with snakes:`, snakes.map(s => ({id: s.snakeid, name: s.snakeenglishname, class: s.class_label})));
+          console.log(`Looking for class label: ${categoryToNumericClass[category.id]}, comparing with snakes:`, snakes.map(s => ({ id: s.snakeid, name: s.snakeenglishname, class: s.class_label })));
 
           return (
             <div key={category.id} className="category-card">

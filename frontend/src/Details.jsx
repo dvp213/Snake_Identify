@@ -60,7 +60,14 @@ function Details() {
 
               <button
                 className="action-button"
-                onClick={() => navigate(`/related/${snake.snakeid || snake.id}`)}
+                onClick={() => {
+                  navigate(`/related`, {
+                    state: {
+                      snakeId: snake.snakeid || snake.id,
+                      snakeName: snake.english_name || snake.snakeenglishname
+                    }
+                  });
+                }}
               >
                 Related Species
               </button>

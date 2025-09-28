@@ -51,7 +51,7 @@ function EditCategory() {
             const categoryToNumericClass = {
                 'ceylonkrait': '0',
                 'cobra': '1',
-                'commonkrait': '2', 
+                'commonkrait': '2',
                 'russellsviper': '3',
                 'sawscaledviper': '4'
             };

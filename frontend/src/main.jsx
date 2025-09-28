@@ -12,6 +12,7 @@ import Chatbot from './chatbot.jsx';
 import Admin from './Admin.jsx';
 import AdminCeylonkrait from './AdminCeylonkrait.jsx';
 import EditCategory from './EditCategory.jsx';
+import AddRelatedSpecies from './AddRelatedSpecies.jsx';
 
 import { AuthProvider } from './contexts/AuthContext';
 
@@ -29,6 +30,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <Route path="/chatbot" element={<Chatbot />} />
         <Route path="/Admin" element={<Admin />} />
         <Route path="/edit-category/:id" element={<EditCategory />} />
+        <Route path="/add-related-species" element={<AddRelatedSpecies />} />
         <Route path="/AdminCeylonkrait" element={<AdminCeylonkrait />} />
       </Routes>
     </AuthProvider>

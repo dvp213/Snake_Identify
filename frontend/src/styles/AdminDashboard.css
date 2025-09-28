@@ -30,6 +30,7 @@
 }
 
 .add-category-button,
+.add-related-button,
 .logout-button {
   padding: 0.75rem 1.5rem;
   border: none;
@@ -37,6 +38,7 @@
   font-weight: bold;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  margin-left: 10px;
 }
 
 .add-category-button {
@@ -46,6 +48,15 @@
 
 .add-category-button:hover {
   background-color: #45a049;
+}
+
+.add-related-button {
+  background-color: #2196f3;
+  color: white;
+}
+
+.add-related-button:hover {
+  background-color: #1976d2;
 }
 
 .logout-button {

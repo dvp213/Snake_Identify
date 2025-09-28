@@ -46,10 +46,33 @@ function AddCategory() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        
+        // Get the selected category from the dropdown
+        const selectedCategoryId = formData.category;
+        // Map category names to class_label numbers (0-4)
+        const categoryToLabel = {
+            'ceylonkrait': '0',
+            'commonkrait': '2',
+            'cobra': '1',
+            'russellsviper': '3',
+            'sawscaledviper': '4'
+        };
+        
+        const class_label = categoryToLabel[selectedCategoryId] || '';
+        const selectedCategory = categories.find(cat => cat.name.toLowerCase() === selectedCategoryId);
+        
+        // Create snake_data JSON
+        const snakeData = {
+            class_label: class_label,
+            snakeenglishname: selectedCategory ? selectedCategory.name : '',
+            snakesinhalaname: selectedCategory ? selectedCategory.sinhala : '',
+            snakeenglishdescription: formData.englishDescription,
+            snakesinhaladescription: formData.sinhalaDescription
+        };
+        
         const formDataToSend = new FormData();
-        formDataToSend.append('class_label', formData.category);
-        formDataToSend.append('snakeenglishdescription', formData.englishDescription);
-        formDataToSend.append('snakesinhaladescription', formData.sinhalaDescription);
+        formDataToSend.append('snake_data', JSON.stringify(snakeData));
+        
         if (formData.image) {
             formDataToSend.append('image', formData.image);
         }
