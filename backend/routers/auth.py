@@ -12,6 +12,7 @@ from models.database import get_db
 from schemas.auth import UserCreate, UserLogin, UserOut, Token
 
 # routers/auth.py
+from fastapi.middleware.cors import CORSMiddleware
 router = APIRouter(tags=["Authentication"])
 
 # Password hashing
@@ -98,7 +99,7 @@ async def login(user: UserLogin, db: Session = Depends(get_db)):
 
 
 # --- Routes ---
-@router.post("/register", response_model=Token)
+@router.post("/register", status_code=201)
 def register(user: UserCreate, db: Session = Depends(get_db)):
     # Check if user exists
     db_user = db.query(models.User).filter(models.User.username == user.email).first()
@@ -110,20 +111,14 @@ def register(user: UserCreate, db: Session = Depends(get_db)):
     new_user = models.User(
         username=user.email,  # username field stores email
         password=hashed_password,
-        is_admin=False  # default to regular user
+        is_admin=False,  # default to regular user
+        token=None  # initialize token as None
     )
     
     try:
         db.add(new_user)
         db.commit()
-        db.refresh(new_user)
-        
-        # Create access token
-        access_token = create_access_token(
-            data={"sub": new_user.username, "is_admin": new_user.is_admin}
-        )
-        
-        return {"access_token": access_token, "token_type": "bearer", "is_admin": new_user.is_admin}
+        return {"message": "User created successfully"}
     except Exception as e:
         db.rollback()
         raise HTTPException(status_code=400, detail=str(e))

@@ -1,14 +1,47 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; // ✅ IMPORT THIS
+import { useNavigate } from "react-router-dom";
 import "./App.css";
 
 function CreateAccount() {
   const [showPassword, setShowPassword] = useState(false);
-  const navigate = useNavigate(); // ✅ INITIALIZE NAVIGATE
+  const [formData, setFormData] = useState({
+    email: "",
+    password: ""
+  });
+  const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    navigate("/Admin");
+    try {
+      const response = await fetch("http://localhost:8000/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password
+        }),
+      });
+
+      if (response.ok) {
+        alert("Account created successfully!");
+        navigate("/Login");
+      } else {
+        const error = await response.json();
+        alert(error.detail || "Failed to create account");
+      }
+    } catch (error) {
+      alert("Error creating account: " + error.message);
+    }
+  };
+
+  const handleChange = (e) => {
+    const { id, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [id]: value
+    }));
   };
 
   const togglePasswordVisibility = () => {
@@ -28,12 +61,16 @@ function CreateAccount() {
 
       <div className="login-container">
         <p className="subtitlelogin">Create Account</p>
-        <form className="login-form" onSubmit={handleLogin}>
-          <label htmlFor="name" className="input1">Your name</label>
-          <input type="name" id="name" placeholder="Enter your name" />
-          
-          <label htmlFor="email" className="input1 input2">Your email</label>
-          <input type="email" id="email" placeholder="Enter your email" />
+        <form className="login-form" onSubmit={handleSubmit}>
+          <label htmlFor="email" className="input1">Your email</label>
+          <input
+            type="email"
+            id="email"
+            placeholder="Enter your email"
+            value={formData.email}
+            onChange={handleChange}
+            required
+          />
 
           <label htmlFor="password" className="input1 input2">Your password</label>
           <div className="password-field">
@@ -41,6 +78,9 @@ function CreateAccount() {
               type={showPassword ? "text" : "password"}
               id="password"
               placeholder="Enter your password"
+              value={formData.password}
+              onChange={handleChange}
+              required
             />
             <span
               className="toggle-password"
@@ -52,7 +92,6 @@ function CreateAccount() {
           <button
             type="submit"
             className="login-button input1 input3"
-            onClick={() => navigate("/Admin")}
           >
             Create Account
           </button>

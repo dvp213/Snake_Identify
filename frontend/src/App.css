@@ -1,4 +1,30 @@
 /* File: src/App.css */
+
+/* Create Account Page */
+.full-container-create-account {
+  display: flex;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 20px;
+}
+
+.full-container-create-account .text-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-left: 80px;
+}
+
+.full-container-create-account .login-container {
+  background: rgba(0, 0, 0, 0.8);
+  padding: 40px;
+  border-radius: 15px;
+  width: 400px;
+  margin-right: 80px;
+  align-self: center;
+}
+
 body, html {
   margin: 0;
   padding: 0;
