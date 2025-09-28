@@ -80,52 +80,52 @@ function AddRelatedSpecies() {
                 snakesinhalaname: formData.snakesinhalaname,
                 snakeenglishdescription: formData.snakeenglishdescription,
                 snakesinhaladescription: formData.snakesinhaladescription,
-                
+
                 // The class_label is used to find the main snake to relate to
                 class_label: formData.categoryClass,
-                
+
                 // Adding this flag to identify this as a related species request
                 is_related_species: true
             };
 
             // Create form data
             const formDataToSend = new FormData();
-            
+
             // Format the JSON string and log it for debugging
             const snakeDataJson = JSON.stringify(snakeData);
             console.log('Snake data JSON:', snakeDataJson);
-            
+
             // Use 'snake_data' as the key - this must match what the backend expects
             formDataToSend.append('snake_data', snakeDataJson);
 
             if (!formData.image) {
                 throw new Error('Please select an image');
             }
-            
+
             // Verify image file details before appending
             console.log('Image file:', formData.image);
             console.log('Image file name:', formData.image.name);
             console.log('Image file type:', formData.image.type);
             console.log('Image file size:', formData.image.size);
-            
+
             formDataToSend.append('image', formData.image);
 
             const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
-            
+
             // Add the snake directly using our simplified endpoint
             // Debug the token
             // Debug token info for troubleshooting
             console.log('Using token:', token ? `${token.substring(0, 15)}...` : 'NO TOKEN FOUND');
-            
+
             // Make sure we have a valid token
             if (!token) {
                 throw new Error('Authentication token is missing. Please log in again.');
             }
-            
+
             // Get auth headers from context
             const authHeaders = getAuthHeaders();
             console.log('Auth headers:', authHeaders);
-            
+
             try {
                 console.log('Sending request to:', `${apiBaseUrl}/snake/add`);
                 console.log('FormData contents:');
@@ -133,7 +133,7 @@ function AddRelatedSpecies() {
                 for (let pair of formDataToSend.entries()) {
                     console.log(pair[0], pair[1]);
                 }
-                
+
                 const response = await fetch(
                     `${apiBaseUrl}/snake/add`,
                     {
@@ -145,24 +145,24 @@ function AddRelatedSpecies() {
                         body: formDataToSend,
                     }
                 );
-                
+
                 // Immediately log response status
                 console.log('Response status:', response.status);
-                
+
                 if (response.ok) {
                     const responseData = await response.json();
                     console.log('Success response:', responseData);
-                    
+
                     // Show success message to the user
                     alert(`Related species added successfully! Main snake ID: ${responseData.main_snake_id}, Related snake ID: ${responseData.related_snake_id}`);
-                    
+
                     // Redirect to the admin page
                     navigate('/Admin');
                 } else {
                     // Handle error responses
                     const errorText = await response.text();
                     let errorMessage = 'Failed to add related species';
-                    
+
                     try {
                         const errorData = JSON.parse(errorText);
                         errorMessage = errorData.detail || errorMessage;
@@ -170,7 +170,7 @@ function AddRelatedSpecies() {
                         // If not valid JSON, use the text as is
                         errorMessage = errorText || errorMessage;
                     }
-                    
+
                     console.error('Error response:', errorMessage);
                     alert(`Error: ${errorMessage}`);
                 }
@@ -181,7 +181,7 @@ function AddRelatedSpecies() {
 
             const responseText = await response.text();
             let responseData;
-            
+
             try {
                 responseData = JSON.parse(responseText);
             } catch (e) {
