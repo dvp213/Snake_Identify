@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import "./App.css";
 import { useAuth } from "./contexts/AuthContext";
 
@@ -9,7 +9,13 @@ function Login() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const location = useLocation();
   const { login } = useAuth();
+  
+  // Check if we have a message or redirect info from the previous page
+  const redirectTo = location.state?.redirectTo;
+  const snakeName = location.state?.snakeName;
+  const message = location.state?.message;
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -32,8 +38,10 @@ function Login() {
         // Use the auth context to login
         login(data.access_token, data.is_admin);
 
-        // Redirect based on user type
-        if (data.is_admin) {
+        // Redirect based on redirect info or user type
+        if (redirectTo === "/chatbot" && snakeName) {
+          navigate("/chatbot", { state: { snakeName } });
+        } else if (data.is_admin) {
           navigate("/Admin");
         } else {
           navigate("/");
@@ -92,6 +100,7 @@ function Login() {
 
           <a href="#" className="forgot-password">Forget your password?</a>
           {error && <div className="error-message" style={{ color: 'red', marginTop: '10px' }}>{error}</div>}
+          {message && <div className="info-message" style={{ color: '#b1903e', marginTop: '10px', fontWeight: '500' }}>{message}</div>}
           <button
             type="submit"
             className="login-button input1 input3"
