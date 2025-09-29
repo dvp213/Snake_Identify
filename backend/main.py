@@ -28,7 +28,7 @@ app.add_middleware(
 app.include_router(auth.router, prefix="/auth", tags=["Authentication"])
 app.include_router(chat.router, prefix="/chat", tags=["Chat"])
 app.include_router(snake.router, prefix="/snake", tags=["Snakes"])
-app.include_router(snake_related.router, prefix="/snake", tags=["Snake Relations"])
+app.include_router(snake_related.router, prefix="/snake-related", tags=["Snake Relations"])
 app.include_router(debug.debug_router)  # Include our debug router
 
 # Mount static files directory
