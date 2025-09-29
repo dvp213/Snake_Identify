@@ -42,10 +42,13 @@ function App() {
           Sign In / Sign Up
         </button>
       ) : (
-        <button className="signin-button" onClick={() => {
-          logout();
-          navigate("/");
-        }}>
+        <button
+          className="signin-button"
+          onClick={() => {
+            logout();
+            navigate("/");
+          }}
+        >
           Sign Out
         </button>
       )}
@@ -64,7 +67,18 @@ function App() {
         <button className="upload-button" onClick={handleUploadClick}>
           Upload photo
         </button>
-        <button className="ask-button" onClick={() => navigate("/Chatbot")}>
+        <button className="ask-button" onClick={() => {
+          if (isAuthenticated) {
+            navigate("/Chatbot");
+          } else {
+            navigate("/Login", {
+              state: {
+                redirectTo: "/Chatbot",
+                message: "Please log in to use the snake identification chatbot"
+              }
+            });
+          }
+        }}>
           Ask about snakes
         </button>
       </div>

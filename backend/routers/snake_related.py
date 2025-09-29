@@ -7,6 +7,12 @@ import schemas.snake as schemas
 import json
 import base64
 from typing import Dict, Any, Optional
+import tensorflow as tf
+import numpy as np
+from PIL import Image
+import io
+import joblib
+import os
 
 router = APIRouter()
 
@@ -195,6 +201,120 @@ async def get_related_snakes(
     except HTTPException:
         raise
     except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+# Load models for classification
+try:
+    # Feature extractor
+    mobilenet = tf.keras.models.load_model("models/mobilenet.h5")
+except Exception as e:
+    print(f"❌ MobileNet load error: {e}")
+    mobilenet = None
+
+try:
+    # PCA transformer
+    pca = joblib.load("models/pca_model.pkl")
+except Exception as e:
+    print(f"❌ PCA load error: {e}")
+    pca = None
+
+try:
+    # Classifier
+    classifier = tf.keras.models.load_model("models/classifier.h5")
+except Exception as e:
+    print(f"❌ Classifier load error: {e}")
+    classifier = None
+
+# Helper function to preprocess the image
+def preprocess_image(image_content):
+    img = Image.open(io.BytesIO(image_content)).convert("RGB").resize((224, 224))
+    arr = np.array(img) / 255.0
+    arr = arr[np.newaxis, ...]  # add batch dim
+    features = mobilenet.predict(arr)
+    features = features.reshape(features.shape[0], -1)
+    reduced_features = pca.transform(features)
+    return reduced_features
+
+@router.post("/identify-with-related")
+async def identify_with_related(
+    image: UploadFile = File(...),
+    db: Session = Depends(get_db)
+):
+    """
+    Identify a snake from an uploaded image and return details with related species.
+    This endpoint can be used without authentication.
+    """
+    # Check if models are loaded
+    if not (mobilenet and pca and classifier):
+        raise HTTPException(status_code=500, detail="Classification models not loaded")
+    
+    try:
+        # Read the image content
+        image_content = await image.read()
+        
+        # Process the image and make prediction
+        reduced_features = preprocess_image(image_content)
+        preds = classifier.predict(reduced_features)
+        class_idx = int(np.argmax(preds, axis=1)[0])
+        confidence = float(np.max(preds))
+        
+        # Get snake details based on class_label
+        snake = db.query(models.Snake).filter(models.Snake.class_label == str(class_idx)).first()
+        
+        if not snake:
+            raise HTTPException(status_code=404, detail=f"No snake found with class label {class_idx}")
+        
+        # Prepare snake data
+        snake_data = {
+            "snakeid": snake.snakeid,
+            "snakeenglishname": snake.snakeenglishname,
+            "snakesinhalaname": snake.snakesinhalaname,
+            "snakeenglishdescription": snake.snakeenglishdescription,
+            "snakesinhaladescription": snake.snakesinhaladescription,
+            "class_label": str(snake.class_label),
+            "confidence": confidence
+        }
+        
+        # Add image data
+        if snake.snakeimage:
+            image_type = snake.snakeimage_type or 'image/jpeg'
+            image_base64 = base64.b64encode(snake.snakeimage).decode('utf-8')
+            snake_data["image_data"] = f"data:{image_type};base64,{image_base64}"
+        
+        # Get related snakes
+        relations = db.query(models.SnakeRelated).filter(models.SnakeRelated.snakeid == snake.snakeid).all()
+        related_snake_ids = [relation.relatedsnakeid for relation in relations]
+        
+        related_snakes = []
+        for related_id in related_snake_ids:
+            related_snake = db.query(models.Snake).filter(models.Snake.snakeid == related_id).first()
+            if related_snake:
+                related_snake_data = {
+                    "snakeid": related_snake.snakeid,
+                    "snakeenglishname": related_snake.snakeenglishname,
+                    "snakesinhalaname": related_snake.snakesinhalaname,
+                    "snakeenglishdescription": related_snake.snakeenglishdescription,
+                    "snakesinhaladescription": related_snake.snakesinhaladescription,
+                    "class_label": str(related_snake.class_label) if related_snake.class_label is not None else None
+                }
+                
+                # Add image data if it exists
+                if related_snake.snakeimage:
+                    related_image_type = related_snake.snakeimage_type or 'image/jpeg'
+                    related_image_base64 = base64.b64encode(related_snake.snakeimage).decode('utf-8')
+                    related_snake_data["image_data"] = f"data:{related_image_type};base64,{related_image_base64}"
+                
+                related_snakes.append(related_snake_data)
+        
+        # Return both snake data and related snakes
+        return {
+            "snake": snake_data,
+            "related_snakes": related_snakes
+        }
+        
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
         raise HTTPException(status_code=500, detail=str(e))
 
 @router.delete("/remove-relation")
