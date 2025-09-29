@@ -78,7 +78,7 @@ function Details() {
       ) : snake ? (
         <div className="details-page-container">
           <button className="back-button details-back" onClick={() => navigate("/")}>Go back</button>
-          
+
           <div className="details-content">
             <div className="details-wrapper">
               <div className="details-right">
@@ -116,17 +116,17 @@ function Details() {
                 </p>
 
                 <div className="button-group">
-                  <button 
-                    className="action-button" 
+                  <button
+                    className="action-button"
                     onClick={() => {
                       if (isAuthenticated) {
-                        navigate("/chatbot", { state: { snakeName: snake.snakeenglishname }});
+                        navigate("/chatbot", { state: { snakeName: snake.snakeenglishname } });
                       } else {
-                        navigate("/login", { 
-                          state: { 
-                            redirectTo: "/chatbot", 
+                        navigate("/login", {
+                          state: {
+                            redirectTo: "/chatbot",
                             snakeName: snake.snakeenglishname,
-                            message: "Please log in to use the snake identification chatbot" 
+                            message: "Please log in to use the snake identification chatbot"
                           }
                         });
                       }

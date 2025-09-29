@@ -11,7 +11,7 @@ function Login() {
   const navigate = useNavigate();
   const location = useLocation();
   const { login } = useAuth();
-  
+
   // Check if we have a message or redirect info from the previous page
   const redirectTo = location.state?.redirectTo;
   const snakeName = location.state?.snakeName;

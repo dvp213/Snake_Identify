@@ -71,14 +71,14 @@ function App() {
           if (isAuthenticated) {
             navigate("/Chatbot");
           } else {
-            navigate("/Login", { 
-              state: { 
+            navigate("/Login", {
+              state: {
                 redirectTo: "/Chatbot",
-                message: "Please log in to use the snake identification chatbot" 
+                message: "Please log in to use the snake identification chatbot"
               }
             });
           }
-        }}> 
+        }}>
           Ask about snakes
         </button>
       </div>
